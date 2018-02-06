@@ -6,6 +6,8 @@ import sys
 # This program simply represents the identity function.
 #
 
+#hello
+
 for line in sys.stdin:
     node = int(line[line.find(':')+1:line.find('\t')])
 
