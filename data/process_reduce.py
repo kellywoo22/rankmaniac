@@ -15,6 +15,7 @@ curr_node = first[0] # get node
 new_rank = 0
 prev_rank = 0
 outlinks = ''
+value_count = 0
 try:
     new_rank = float(first[1]) # value is a new rank
 except ValueError:
@@ -23,7 +24,9 @@ except ValueError:
         prev_rank = float(first[1][1:])
     # value is list of outlinks, save it
     else:
-        outlinks = first[1]
+        outlinks = first[1][1:]
+
+value_count += 1
 
 for line in sys.stdin:
     split = line.split('\t')
@@ -38,11 +41,15 @@ for line in sys.stdin:
                 prev_rank = float(split[1][1:])
             # value is list of outlinks, save it
             else:
-                outlinks = split[1]
+                outlinks = split[1][1:]
+
+        value_count += 1
+        # if done with this node, write it as output
+        if value_count == 3:
+            sys.stdout.write('NodeId:'+str(curr_node)+'\t'+str(new_rank)+','+str(prev_rank)+','+outlinks)
+            value_count = 0
     else:
-        # done with last node, write it as output
-        sys.stdout.write('NodeId:'+str(curr_node)+'\t'+str(new_rank)+','+str(prev_rank)+outlinks)
-        # now update current node and parse the new value
+        # update current node and parse the new value
         curr_node = node
         try:
             new_rank = float(split[1]) # value is a new rank
@@ -52,5 +59,10 @@ for line in sys.stdin:
                 prev_rank = float(split[1][1:])
             # value is list of outlinks, save it
             else:
-                outlinks = split[1]
+                outlinks = split[1][1:]
 
+        value_count += 1
+        # if done with this node, write it as output
+        if value_count == 3:
+            sys.stdout.write('NodeId:'+str(curr_node)+'\t'+str(new_rank)+','+str(prev_rank)+outlinks)
+            value_count = 0

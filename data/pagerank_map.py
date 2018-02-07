@@ -19,21 +19,25 @@ for line in sys.stdin:
 
     # No outlinks
     if rank2_index == -1:
+        # Rank is unchanged
         sys.stdout.write(str(node)+'\t'+str(rank1)+'\n')
+        # Emit previous rank
+        sys.stdout.write(str(node)+'\t'+'r'+str(rank1)+'\n')
+        # Outlinks string is empty
+        sys.stdout.write(str(node)+'\t'+'l'+'\n')
         continue
 
     sys.stdout.write(str(node)+'\t'+str(0.0)+'\n')
 
     outlinks_str = line[rank2_index+1:-1]
     outlinks = outlinks_str.split(',')
-    outlinks = [int(i) for i in outlinks]
 
     # Emit (key,value) pairs
     for link in outlinks:
         sys.stdout.write(str(link)+'\t'+str(rank1/len(outlinks))+'\n')
     
     # Emit graph structure data (outlinks) 
-    sys.stdout.write(str(node)+'\t'+outlinks_str+'\n')
+    sys.stdout.write(str(node)+'\t'+'l'+outlinks_str+'\n')
     # Emit previous rank
     sys.stdout.write(str(node)+'\t'+'r'+str(rank1)+'\n')
 
