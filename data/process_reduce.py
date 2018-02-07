@@ -46,7 +46,10 @@ for line in sys.stdin:
         value_count += 1
         # if done with this node, write it as output
         if value_count == 3:
-            sys.stdout.write('NodeId:'+str(curr_node)+'\t'+str(new_rank)+','+str(prev_rank)+','+outlinks)
+            if outlinks != '\n':
+                sys.stdout.write('NodeId:'+str(curr_node)+'\t'+str(new_rank)+','+str(prev_rank)+','+outlinks)
+            else:
+                sys.stdout.write('NodeId:'+str(curr_node)+'\t'+str(new_rank)+','+str(prev_rank)+'\n')
             value_count = 0
     else:
         # update current node and parse the new value
