@@ -24,9 +24,17 @@ for line in sys.stdin:
 
     sys.stdout.write(str(node)+'\t'+str(0.0)+'\n')
 
-    outlinks = line[rank2_index+1:-1].split(',')
+    outlinks_str = line[rank2_index+1:-1]
+    outlinks = outlinks_str.split(',')
     outlinks = [int(i) for i in outlinks]
 
+    # Emit (key,value) pairs
     for link in outlinks:
         sys.stdout.write(str(link)+'\t'+str(rank1/len(outlinks))+'\n')
+    
+    # Emit graph structure data (outlinks) 
+    sys.stdout.write(str(node)+'\t'+outlinks_str+'\n')
+    # Emit previous rank
+    sys.stdout.write(str(node)+'\t'+'r'+str(rank1)+'\n')
+
 
