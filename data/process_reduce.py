@@ -7,7 +7,7 @@ import sys
 #
 # HELLLLOOOO
 
-NUM_ITERATIONS = 5
+NUM_ITERATIONS = 3
 final_rank = False
 iter_key_received = False
 
@@ -22,6 +22,9 @@ value_count = 0
 
 # dict of top 20 values
 pr_dict = {}
+
+# output string which is read as new input
+output = ''
 
 # Handle first line
 first = sys.stdin.readline().split("\t")
@@ -82,9 +85,9 @@ for line in sys.stdin:
         # if done with this node, write it as output
         if value_count == 3:
             if outlinks != '\n':
-                sys.stdout.write('NodeId:'+str(curr_node)+'\t'+str(new_rank)+','+str(prev_rank)+','+outlinks)
+                output += 'NodeId:'+str(curr_node)+'\t'+str(new_rank)+','+str(prev_rank)+','+outlinks
             else:
-                sys.stdout.write('NodeId:'+str(curr_node)+'\t'+str(new_rank)+','+str(prev_rank)+'\n')
+                output += 'NodeId:'+str(curr_node)+'\t'+str(new_rank)+','+str(prev_rank)+'\n'
             value_count = 0
             # update the top 20 dict
             if len(pr_dict) < 20:
@@ -110,9 +113,9 @@ for line in sys.stdin:
         # if done with this node, write it as output
         if value_count == 3:
             if outlinks != '\n':
-                sys.stdout.write('NodeId:'+str(curr_node)+'\t'+str(new_rank)+','+str(prev_rank)+','+outlinks)
+                output += 'NodeId:'+str(curr_node)+'\t'+str(new_rank)+','+str(prev_rank)+','+outlinks
             else:
-                sys.stdout.write('NodeId:'+str(curr_node)+'\t'+str(new_rank)+','+str(prev_rank)+'\n')
+                output += 'NodeId:'+str(curr_node)+'\t'+str(new_rank)+','+str(prev_rank)+'\n'
             value_count = 0
             # update the top 20 dict
             if len(pr_dict) < 20:
@@ -124,10 +127,12 @@ for line in sys.stdin:
 
 #if iterations key hasn't been received, generate a new one 
 if not iter_key_received:
-    sys.stdout.write('k'+'\t'+'1')
+    sys.stdout.write('k'+'\t'+'1'+'\n')
 
 if final_rank:
     sorted_dict = sorted(pr_dict, key=pr_dict.get)
     sorted_dict.reverse()
     for key in sorted_dict:
         sys.stdout.write('FinalRank:'+str(pr_dict[key])+'\t'+str(key)+'\n')
+else:
+    sys.stdout.write(output)

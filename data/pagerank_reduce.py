@@ -36,6 +36,7 @@ for line in infile:
         # value is not a float, just reemit it
         sys.stdout.write(str(node)+'\t'+values[1]) 
         continue
+        
     if node1 == node:
         p += r
         node = node1
