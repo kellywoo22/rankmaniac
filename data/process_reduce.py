@@ -7,7 +7,7 @@ import sys
 #
 # HELLLLOOOO
 
-NUM_ITERATIONS = 3
+NUM_ITERATIONS = 15
 final_rank = False
 iter_key_received = False
 

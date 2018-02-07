@@ -2,7 +2,7 @@
 
 #!bin/bash
 
-for i in {1..10}
+for i in {1..15}
 do
 	python2.6 pagerank_map.py < input.txt | sort -k1,1n | python2.6 pagerank_reduce.py > temp.txt
 	python2.6 process_map.py < temp.txt | sort -k1,1n | python2.6 process_reduce.py > input.txt
