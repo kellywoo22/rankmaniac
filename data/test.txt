@@ -1,7 +1,9 @@
 #!bin/bash
 
-for i in {1..2}
+#!bin/bash
+
+for i in {1..10}
 do
-	python2.6 pagerank_map.py < input.txt | sort -k1,1n | python2.6 pagerank_reduce.py | python2.6 process_map.py | sort -k1,1n | python2.6 process_reduce.py > output.txt
-	echo " "
+	python2.6 pagerank_map.py < input.txt | sort -k1,1n | python2.6 pagerank_reduce.py > temp.txt
+	python2.6 process_map.py < temp.txt | sort -k1,1n | python2.6 process_reduce.py > input.txt
 done
