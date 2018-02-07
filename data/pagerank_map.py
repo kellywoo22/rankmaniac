@@ -9,6 +9,11 @@ import sys
 #hello
 
 for line in sys.stdin:
+    # Let iteration key pass through
+    if line[0] == 'k':
+        sys.stdout.write(line)
+        continue
+
     node = int(line[line.find(':')+1:line.find('\t')])
 
     rank1_index = line.find(',')

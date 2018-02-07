@@ -5,32 +5,67 @@ import sys
 #
 # This program simply represents the identity function.
 #
-# HELLLLOOOOO
+# HELLLLOOOO
+
+NUM_ITERATIONS = 5
+final_rank = False
+iter_key_received = False
 
 # Variables used in create a line of output (reused)
-
-# Handle first line
-first = sys.stdin.readline().split("\t")
-curr_node = first[0] # get node
+curr_node = 0
 new_rank = 0
 prev_rank = 0
 outlinks = ''
-value_count = 0
-try:
-    new_rank = float(first[1]) # value is a new rank
-except ValueError:
-    # value is a previous rank, save it
-    if first[1][0] == 'r':
-        prev_rank = float(first[1][1:])
-    # value is list of outlinks, save it
-    else:
-        outlinks = first[1][1:]
 
-value_count += 1
+# Count to check that all 3 kinds of values have been received for a given key
+value_count = 0
+
+# dict of top 20 values
+pr_dict = {}
+
+# Handle first line
+first = sys.stdin.readline().split("\t")
+
+# key is num interations
+if first[0] == 'k':
+    k = int(first[1])
+    if (k+1 >= NUM_ITERATIONS):
+        final_rank = True
+    else:
+        sys.stdout.write('k'+'\t'+str(k+1)+','+str(prev_rank)+'\n')
+    iter_key_received = True
+
+# key is a node
+else:
+    curr_node = int(first[0])
+    try:
+        new_rank = float(first[1]) # value is a new rank
+    except ValueError:
+        # value is a previous rank, save it
+        if first[1][0] == 'r':
+            prev_rank = float(first[1][1:])
+        # value is list of outlinks, save it
+        else:
+            outlinks = first[1][1:]
+
+    value_count += 1
 
 for line in sys.stdin:
     split = line.split('\t')
-    node = split[0]
+
+    # key is num interations
+    if split[0] == 'k':
+        k = int(split[1])
+        if (k+1 >= NUM_ITERATIONS):
+            final_rank = True
+        else:
+            sys.stdout.write('k'+'\t'+str(k+1)+'\n')
+        iter_key_received = True
+        continue
+
+    # otherwise key is a node
+    node = int(split[0])
+
     if node == curr_node:
         # parse the value
         try:
@@ -51,6 +86,13 @@ for line in sys.stdin:
             else:
                 sys.stdout.write('NodeId:'+str(curr_node)+'\t'+str(new_rank)+','+str(prev_rank)+'\n')
             value_count = 0
+            # update the top 20 dict
+            if len(pr_dict) < 20:
+                pr_dict[curr_node] = float(new_rank)
+            else:
+                if min(pr_dict.values()) < float(new_rank):
+                    del pr_dict[min(pr_dict, key=pr_dict.get)]
+                    pr_dict[curr_node] = float(new_rank)
     else:
         # update current node and parse the new value
         curr_node = node
@@ -67,5 +109,25 @@ for line in sys.stdin:
         value_count += 1
         # if done with this node, write it as output
         if value_count == 3:
-            sys.stdout.write('NodeId:'+str(curr_node)+'\t'+str(new_rank)+','+str(prev_rank)+outlinks)
+            if outlinks != '\n':
+                sys.stdout.write('NodeId:'+str(curr_node)+'\t'+str(new_rank)+','+str(prev_rank)+','+outlinks)
+            else:
+                sys.stdout.write('NodeId:'+str(curr_node)+'\t'+str(new_rank)+','+str(prev_rank)+'\n')
             value_count = 0
+            # update the top 20 dict
+            if len(pr_dict) < 20:
+                pr_dict[curr_node] = float(new_rank)
+            else:
+                if min(pr_dict.values()) < float(new_rank):
+                    del pr_dict[min(pr_dict, key=pr_dict.get)]
+                    pr_dict[curr_node] = float(new_rank)
+
+#if iterations key hasn't been received, generate a new one 
+if not iter_key_received:
+    sys.stdout.write('k'+'\t'+'1')
+
+if final_rank:
+    sorted_dict = sorted(pr_dict, key=pr_dict.get)
+    sorted_dict.reverse()
+    for key in sorted_dict:
+        sys.stdout.write('FinalRank:'+str(pr_dict[key])+'\t'+str(key)+'\n')
