@@ -15,11 +15,11 @@ else:
     except ValueError:
         # value is not a float, just reemit it
         sys.stdout.write(str(node)+'\t'+first[1]) 
-        
+
 infile = sys.stdin
 next(infile) # skip the first line, already counted
 
-for line in sys.stdin:
+for line in infile:
 
     values = line.split("\t")
     # Let iteration key pass through
