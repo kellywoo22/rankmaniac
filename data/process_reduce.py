@@ -7,7 +7,7 @@ import sys
 #
 # HELLLLOOOO
 
-NUM_ITERATIONS = 3
+NUM_ITERATIONS = 10
 final_rank = False
 iter_key_received = False
 
@@ -35,7 +35,7 @@ if first[0] == 'k':
     if (k+1 >= NUM_ITERATIONS):
         final_rank = True
     else:
-        sys.stdout.write('k'+'\t'+str(k+1)+','+str(prev_rank)+'\n')
+        sys.stdout.write('k'+'\t'+str(k+1)+'\n')
     iter_key_received = True
 
 # key is a node
