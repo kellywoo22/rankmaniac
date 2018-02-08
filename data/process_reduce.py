@@ -5,7 +5,7 @@ import sys
 #
 # This program simply represents the identity function.
 #
-# HELLLLOOOO
+
 
 NUM_ITERATIONS = 15
 final_rank = False
@@ -35,7 +35,8 @@ if first[0] == 'k':
     if (k+1 >= NUM_ITERATIONS):
         final_rank = True
     else:
-        sys.stdout.write('k'+'\t'+str(k+1)+','+str(prev_rank)+'\n')
+        sys.stdout.write('k'+'\t'+ str(k+1) + '\n')
+
     iter_key_received = True
 
 # key is a node
