@@ -2,17 +2,12 @@
 
 import sys
 
-#
-# This program simply represents the identity function.
-#
-
-
 NUM_ITERATIONS = 15
 final_rank = False
 iter_key_received = False
 
 # Variables used in create a line of output (reused)
-curr_node = 0
+
 new_rank = 0
 prev_rank = 0
 outlinks = ''
@@ -35,13 +30,12 @@ if first[0] == 'k':
     if (k+1 >= NUM_ITERATIONS):
         final_rank = True
     else:
-        sys.stdout.write('k'+'\t'+ str(k+1) + '\n')
-
+        sys.stdout.write('k'+'\t'+str(k+1)+','+'\n')
     iter_key_received = True
 
 # key is a node
 else:
-    curr_node = int(first[0])
+    node = int(first[0])
     try:
         new_rank = float(first[1]) # value is a new rank
     except ValueError:
@@ -70,61 +64,34 @@ for line in sys.stdin:
     # otherwise key is a node
     node = int(split[0])
 
-    if node == curr_node:
-        # parse the value
-        try:
-            new_rank = float(split[1]) # value is a new rank
-        except ValueError:
-            # value is a previous rank, save it
-            if split[1][0] == 'r':
-                prev_rank = float(split[1][1:])
-            # value is list of outlinks, save it
-            else:
-                outlinks = split[1][1:]
 
-        value_count += 1
-        # if done with this node, write it as output
-        if value_count == 3:
-            if outlinks != '\n':
-                output += 'NodeId:'+str(curr_node)+'\t'+str(new_rank)+','+str(prev_rank)+','+outlinks
-            else:
-                output += 'NodeId:'+str(curr_node)+'\t'+str(new_rank)+','+str(prev_rank)+'\n'
-            value_count = 0
-            # update the top 20 dict
-            if len(pr_dict) < 20:
-                pr_dict[curr_node] = float(new_rank)
-            else:
-                if min(pr_dict.values()) < float(new_rank):
-                    del pr_dict[min(pr_dict, key=pr_dict.get)]
-                    pr_dict[curr_node] = float(new_rank)
-    else:
-        # update current node and parse the new value
-        curr_node = node
-        try:
-            new_rank = float(split[1]) # value is a new rank
-        except ValueError:
-            # value is a previous rank, save it
-            if split[1][0] == 'r':
-                prev_rank = float(split[1][1:])
-            # value is list of outlinks, save it
-            else:
-                outlinks = split[1][1:]
+    # parse the value
+    try:
+        new_rank = float(split[1]) # value is a new rank
+    except ValueError:
+        # value is a previous rank, save it
+        if split[1][0] == 'r':
+            prev_rank = float(split[1][1:])
+        # value is list of outlinks, save it
+        else:
+            outlinks = split[1][1:]
 
-        value_count += 1
-        # if done with this node, write it as output
-        if value_count == 3:
-            if outlinks != '\n':
-                output += 'NodeId:'+str(curr_node)+'\t'+str(new_rank)+','+str(prev_rank)+','+outlinks
-            else:
-                output += 'NodeId:'+str(curr_node)+'\t'+str(new_rank)+','+str(prev_rank)+'\n'
-            value_count = 0
-            # update the top 20 dict
-            if len(pr_dict) < 20:
-                pr_dict[curr_node] = float(new_rank)
-            else:
-                if min(pr_dict.values()) < float(new_rank):
-                    del pr_dict[min(pr_dict, key=pr_dict.get)]
-                    pr_dict[curr_node] = float(new_rank)
+    value_count += 1
+    # if done with this node, write it as output
+    if value_count == 3:
+        if outlinks != '\n':
+            output += 'NodeId:'+str(node)+'\t'+str(new_rank)+','+str(prev_rank)+','+outlinks
+        else:
+            output += 'NodeId:'+str(node)+'\t'+str(new_rank)+','+str(prev_rank)+'\n'
+        value_count = 0
+        # update the top 20 dict
+        if len(pr_dict) < 20:
+            pr_dict[node] = float(new_rank)
+        else:
+            if min(pr_dict.values()) < float(new_rank):
+                del pr_dict[min(pr_dict, key=pr_dict.get)]
+                pr_dict[node] = float(new_rank)
+
 
 #if iterations key hasn't been received, generate a new one 
 if not iter_key_received:
