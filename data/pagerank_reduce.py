@@ -4,6 +4,7 @@ import sys
 
 SCALE = 0.85 # scale factor
 
+
 first = sys.stdin.readline().split("\t")
 if first[0] == 'k':
     sys.stdout.write(first)
@@ -16,8 +17,8 @@ else:
         # value is not a float, just reemit it
         sys.stdout.write(str(node)+'\t'+first[1]) 
 
-#infile = sys.stdin
-#next(infile) # skip the first line, already counted
+# infile = sys.stdin
+# next(infile) # skip the first line, already counted
 
 for line in sys.stdin:
 
@@ -48,6 +49,7 @@ for line in sys.stdin:
 # account for the last node
 d = SCALE * p + 1. - SCALE
 sys.stdout.write(str(node)+'\t'+str(d)+'\n')
+
 
 #    !/usr/bin/env python
 
@@ -101,3 +103,4 @@ sys.stdout.write(str(node)+'\t'+str(d)+'\n')
 
 # for key in d:
 #     sys.stdout.write(str(key)+'\t'+str(d[key])+'\n')
+
