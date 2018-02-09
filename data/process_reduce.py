@@ -21,33 +21,6 @@ pr_dict = {}
 # output string which is read as new input
 output = ''
 
-# Handle first line
-first = sys.stdin.readline().split("\t")
-
-# key is num interations
-if first[0] == 'k':
-    k = int(first[1])
-    if (k+1 >= NUM_ITERATIONS):
-        final_rank = True
-    else:
-        sys.stdout.write('k'+'\t'+str(k+1)+','+'\n')
-    iter_key_received = True
-
-# key is a node
-else:
-    node = int(first[0])
-    try:
-        new_rank = float(first[1]) # value is a new rank
-    except ValueError:
-        # value is a previous rank, save it
-        if first[1][0] == 'r':
-            prev_rank = float(first[1][1:])
-        # value is list of outlinks, save it
-        else:
-            outlinks = first[1][1:]
-
-    value_count += 1
-
 for line in sys.stdin:
     split = line.split('\t')
 
