@@ -111,29 +111,29 @@ for line in sys.stdin:
         else:
             sys.stdout.write('k'+'\t'+str(k+1)+'\n')
         iter_key_received = True
-        continue
 
-    # otherwise key is a node
-    node = int(split[0])
+    else:
+        # otherwise key is a node
+        node = int(split[0])
 
-    # parse the value
-    try:
-        rank = float(split[1]) # value is a new rank
-        new_rank[node] = rank
-        # update the top 20 dict
-        if len(top20) < 20:
-            top20[node] = rank
-        else:
-            if min(top20.values()) < rank:
-                del top20[min(top20, key=top20.get)]
+        # parse the value
+        try:
+            rank = float(split[1]) # value is a new rank
+            new_rank[node] = rank
+            # update the top 20 dict
+            if len(top20) < 20:
                 top20[node] = rank
-    except ValueError:
-        # value is a previous rank, save it
-        if split[1][0] == 'r':
-            old_rank[node] = float(split[1][1:])
-        # value is list of outlinks, save it
-        else:
-            outlinks[node] = split[1][1:]
+            else:
+                if min(top20.values()) < rank:
+                    del top20[min(top20, key=top20.get)]
+                    top20[node] = rank
+        except ValueError:
+            # value is a previous rank, save it
+            if split[1][0] == 'r':
+                old_rank[node] = float(split[1][1:])
+            # value is list of outlinks, save it
+            else:
+                outlinks[node] = split[1][1:]
 
 #if iterations key hasn't been received, generate a new one 
 if not iter_key_received:

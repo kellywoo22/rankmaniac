@@ -66,19 +66,16 @@ for line in sys.stdin:
         node = int(values[0])
         try:
             r = float(values[1]) # value is a float
+            # at this point the line must be an int, so it is the rank
+            if node in dict_pr:
+            # if node same as previous, then keep adding rank
+                dict_pr[node] = r +  dict_pr[node]
+            else:
+                dict_pr[node] = r
         except ValueError:
             # value is not a float, just reemit it
             sys.stdout.write(str(node)+'\t'+values[1]) 
-            continue
-        # at this point the line must be an int, so it is the rank
-        if node in dict_pr:
-        # if node same as previous, then keep adding rank
-            dict_pr[node] = r +  dict_pr[node]
-        else:
-            dict_pr[node] = r
-            # otherwise calculate the rank
             
-            # output the node and rank
 for key in dict_pr:
     d = SCALE * dict_pr[key] + 1. - SCALE
     sys.stdout.write(str(key)+'\t'+str(d)+'\n')
