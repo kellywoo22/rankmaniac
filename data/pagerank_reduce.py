@@ -1,6 +1,6 @@
 # #!/usr/bin/env python
 
-# import sys
+import sys
 
 SCALE = 0.85 # scale factor
 
@@ -16,10 +16,10 @@ else:
         # value is not a float, just reemit it
         sys.stdout.write(str(node)+'\t'+first[1]) 
 
-infile = sys.stdin
-next(infile) # skip the first line, already counted
+# infile = sys.stdin
+# next(infile) # skip the first line, already counted
 
-for line in infile:
+for line in sys.stdin:
 
     values = line.split("\t")
     # Let iteration key pass through
