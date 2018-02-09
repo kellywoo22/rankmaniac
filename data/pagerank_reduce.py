@@ -1,67 +1,13 @@
 # #!/usr/bin/env python
 
-import sys
-
-SCALE = 0.85 # scale factor
-
-
-first = sys.stdin.readline().split("\t")
-if first[0] == 'k':
-    sys.stdout.write(first)
-else:
-    node = int(first[0]) # get node
-    p = 0
-    try:
-        p = float(first[1]) # value is a float
-    except ValueError:
-        # value is not a float, just reemit it
-        sys.stdout.write(str(node)+'\t'+first[1]) 
-
-# infile = sys.stdin
-# next(infile) # skip the first line, already counted
-
-for line in sys.stdin:
-
-    values = line.split("\t")
-    # Let iteration key pass through
-    if values[0] == 'k':
-        sys.stdout.write(line)
-    else:
-        node1 = int(values[0])
-        try:
-            r = float(values[1]) # value is a float
-        except ValueError:
-            # value is not a float, just reemit it
-            sys.stdout.write(str(node)+'\t'+values[1]) 
-            continue
-        # at this point the line must be an int, so it is the rank
-        if node1 == node:
-        # if node same as previous, then keep adding rank
-            p += r
-        else:
-            # otherwise calculate the rank
-            d = SCALE * p + 1. - SCALE
-            p = r
-            # output the node and rank
-            sys.stdout.write(str(node)+'\t'+str(d)+'\n')
-            # set new node
-            node = node1
-# account for the last node
-d = SCALE * p + 1. - SCALE
-sys.stdout.write(str(node)+'\t'+str(d)+'\n')
-
-
-#    !/usr/bin/env python
-
 # import sys
 
-# d = {} # dictionary to hold node x, and PR(x)
 # SCALE = 0.85 # scale factor
 
+
 # first = sys.stdin.readline().split("\t")
-# # Let iteration key pass through
 # if first[0] == 'k':
-#     sys.stdout.write(line)
+#     sys.stdout.write(first)
 # else:
 #     node = int(first[0]) # get node
 #     p = 0
@@ -71,36 +17,69 @@ sys.stdout.write(str(node)+'\t'+str(d)+'\n')
 #         # value is not a float, just reemit it
 #         sys.stdout.write(str(node)+'\t'+first[1]) 
 
-# infile = sys.stdin
-# next(infile) # skip the first line, already counted
+# # infile = sys.stdin
+# # next(infile) # skip the first line, already counted
 
-# for line in infile:
-#     # Let iteration key pass through
-#     if line[0] == 'k':
-#         print "hello"
-#         print line
-#         sys.stdout.write(line)
-#         continue
+# for line in sys.stdin:
 
 #     values = line.split("\t")
-#     node1 = int(values[0])
-#     r = 0
-#     try:
-#         r = float(values[1]) # value is a float
-#     except ValueError:
-#         # value is not a float, just reemit it
-#         sys.stdout.write(str(node)+'\t'+values[1]) 
-#         continue
-#     if node1 == node:
-#         p += r
-#         node = node1
+#     # Let iteration key pass through
+#     if values[0] == 'k':
+#         sys.stdout.write(line)
 #     else:
-#         d[node] = SCALE * p + 1. - SCALE
-#         p = r
-#         node = node1
+#         node1 = int(values[0])
+#         try:
+#             r = float(values[1]) # value is a float
+#         except ValueError:
+#             # value is not a float, just reemit it
+#             sys.stdout.write(str(node)+'\t'+values[1]) 
+#             continue
+#         # at this point the line must be an int, so it is the rank
+#         if node1 == node:
+#         # if node same as previous, then keep adding rank
+#             p += r
+#         else:
+#             # otherwise calculate the rank
+#             d = SCALE * p + 1. - SCALE
+#             p = r
+#             # output the node and rank
+#             sys.stdout.write(str(node)+'\t'+str(d)+'\n')
+#             # set new node
+#             node = node1
+# # account for the last node
+# d = SCALE * p + 1. - SCALE
+# sys.stdout.write(str(node)+'\t'+str(d)+'\n')
 
-# d[node] = p
 
-# for key in d:
-#     sys.stdout.write(str(key)+'\t'+str(d[key])+'\n')
+import sys
+
+SCALE = 0.85 # scale factor
+dict_pr = {}
+
+for line in sys.stdin:
+
+    values = line.split("\t")
+    # Let iteration key pass through
+    if values[0] == 'k':
+        sys.stdout.write(line)
+    else:
+        node = int(values[0])
+        try:
+            r = float(values[1]) # value is a float
+        except ValueError:
+            # value is not a float, just reemit it
+            sys.stdout.write(str(node)+'\t'+values[1]) 
+            continue
+        # at this point the line must be an int, so it is the rank
+        if node in dict_pr:
+        # if node same as previous, then keep adding rank
+            dict_pr[node] = r +  dict_pr[node]
+        else:
+            dict_pr[node] = r
+            # otherwise calculate the rank
+            
+            # output the node and rank
+for key in dict_pr:
+    d = SCALE * dict_pr[key] + 1. - SCALE
+    sys.stdout.write(str(key)+'\t'+str(d)+'\n')
 
